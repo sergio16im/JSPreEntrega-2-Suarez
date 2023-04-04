@@ -90,13 +90,16 @@ function inicioSesion(){
     let advertencia=""
     let pista=""
     for(let i=2;i>=0;i--){
-        let userIn=prompt("Por favor ingrese su usuario:"+"\n"+pista)
+        let userIn=prompt("Por favor ingrese su usuario:"+"\n"+pista+"\n Ingrese X para cancelar")
         let passwordIn= parseInt(prompt("Por favor ingrese su contraseña:"+ "\n"+advertencia)) 
         if(userIn===myUser.nombre && passwordIn==myUser.contraseña){
             alert("Bienvenido "+ myUser.nombre)
             menuPrincipal();
             break;
-            
+        }
+        else if(userIn=="x" || userIn=="X"){
+            menuSecundario()
+            break;
         }
         else{
             
@@ -271,6 +274,6 @@ function reserva(hora){
 
 //Desplique del algoritmo
 horariosDisponibilidad()
-menuPrincipal()
+menuSecundario()
 
 
