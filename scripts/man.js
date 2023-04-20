@@ -1,7 +1,7 @@
-const titulo = document.querySelector("#titulo"),
-  autor = document.querySelector("#autor"),
-  isbn = document.querySelector("#isbn"),
-  categoria = document.querySelector("#categoria"),
+const nombre = document.querySelector("#nombre"),
+  autor = document.querySelector("#direccion"),
+  isbn = document.querySelector("#NIT"),
+  categoria = document.querySelector("#calificacion"),
   precio = document.querySelector("#precio"),
   img = document.querySelector("#img"),
   search = document.querySelector("#search"),
@@ -12,55 +12,44 @@ const radios = document.querySelectorAll('input[type="radio"]');
 //Libros ya guardados en inventario
 const inventario = [
   {
-    titulo: "cuentos completos",
-    autor: "edgard alan poe",
-    isbn: "9788491052166",
-    categoria: "cuento",
-    precio: 2500.99,
-    img: "http://boutiquedezothique.es/793-large_default/cuentos-completos-edgar-allan-poe.jpg",
+    nombre:"La pecosa",
+    direccion:"Calle falsa 123",
+    NIT:"1232313",
+    calificacion:23,
+    precio:1200,
+    img: "./assets/images/cancha_1.jpg",
   },
   {
-    titulo: "quien pierde paga",
-    autor: "stephen king",
-    isbn: "9789506443924",
-    categoria: "terror",
-    precio: 1800.99,
-    img: "http://d2r9epyceweg5n.cloudfront.net/stores/001/421/275/products/king_quienpierdepaga_libro3d1-186af08b4fbf47f81116071041288636-640-0.png",
+    nombre:"La pecosa",
+    direccion:"Calle falsa 123",
+    NIT:"1232313",
+    calificacion:23,
+    precio:1200,
+    img: "./assets/images/cancha_2.jpg",
   },
 ];
 
 //Seteo variable libros, si LS vacio entonces libros = inventario
 //#####
-let libros = JSON.parse(localStorage.getItem("inventario")) || inventario;
-/* if (localStorage.getItem("inventario")) {
-  libros = JSON.parse(localStorage.getItem("inventario"));
-} else {
-  libros = inventario;
-} */
+let canchas = JSON.parse(localStorage.getItem("inventario")) || inventario;
+
 
 //Constructor del objeto Libro
-function Libro(titulo, autor, isbn, categoria, precio, img) {
-  this.titulo = titulo;
-  this.autor = autor;
-  this.isbn = isbn;
-  this.categoria = categoria;
-  //Si campo precio vacío this.precio = 1
-  /* if (precio == "") {
-    this.precio = 'Sin precio';
-  } else {
-    this.precio = precio;
-  } */
+function Cancha(nombre,direccion,NIT,calificacion, precio, img) {
+  this.nombre = nombre;
+  this.direccion = direccion;
+  this.NIT = NIT;
+  this.calificacion = calificacion;
+  
   precio == "" ? (this.precio = 1) : (this.precio = precio);
-  //####
-  //Si campo img vacío this.img genérica
-  //####
+  
   img == "" ? (this.img = `https://via.placeholder.com/150`) : (this.img = img);
 }
 
 /* Declaración de Funciones */
 //Cargar al inventario
-function cargarInventario(arr, libro) {
-  arr.push(libro);
+function cargarInventario(arr, cancha) {
+  arr.push(cancha);
 }
 //Funciones de LS
 function guardarLS(arr) {
@@ -87,15 +76,15 @@ function crearHtml(arr) {
 
   let html = "";
   for (const item of arr) {
-    const { titulo, autor, isbn, categoria, precio, img } = item;
+    const { nombre,direccion,NIT, calificacion, precio, img } = item;
     html = `<tr>
-  <td>${titulo}</td>
-  <td>${autor}</td>
-  <td>${isbn}</td>
-  <td>${categoria}</td>
+  <td>${nombre}</td>
+  <td>${direccion}</td>
+  <td>${NIT}</td>
+  <td>${calificacion}</td>
   <td>${precio}</td>
   <td><img src="${img}" style="width: 8rem;"/></td>
-  <td><button class="btn btn-danger" id="${isbn}">Borrar</button></td>
+  <td><button class="btn btn-danger" id="${NIT}">Borrar</button></td>
   </tr>`;
     tbody.innerHTML += html;
   }
@@ -104,39 +93,39 @@ function crearHtml(arr) {
   const arrayBotones = document.querySelectorAll("td .btn");
   arrayBotones.forEach((btn) => {
     btn.addEventListener("click", () => {
-      libros = libros.filter((el) => el.isbn != btn.id);
-      guardarLS(libros);
-      crearHtml(libros);
+      canchas = canchas.filter((el) => el.NIT != btn.id);
+      guardarLS(canchas);
+      crearHtml(canchas);
     });
   });
 }
 
 /* Fin de funciones */
-//####
+
 /* Ejecución de funciones */
-crearHtml(libros);
+crearHtml(canchas);
 
 //Listeners
 formInventario.addEventListener("submit", (e) => {
   e.preventDefault();
-  const nuevoLibro = new Libro(
-    titulo.value,
-    autor.value,
-    isbn.value,
-    categoria.value,
+  const nuevacancha = new Cancha(
+    nombre.value,
+    direccion.value,
+    NIT.value,
+    calificacion.value,
     precio.value,
     img.value
   );
 
-  cargarInventario(libros, nuevoLibro);
-  guardarLS(libros);
-  crearHtml(libros);
+  cargarInventario(canchas, nuevacancha);
+  guardarLS(canchas);
+  crearHtml(canchas);
   formInventario.reset()
 });
 
 //Listeners de búsqueda
 search.addEventListener("input", () => {
-  let nuevoFiltro = filtrar(libros, search.value, "titulo");
+  let nuevoFiltro = filtrar(canchas, search.value, "nombre");
   crearHtml(nuevoFiltro);
 });
 
@@ -146,7 +135,7 @@ for (const radio of radios) {
     
     if (radio.checked) {
       search.addEventListener("input", () => {
-        let nuevoFiltro = filtrar(libros, search.value, radio.value);
+        let nuevoFiltro = filtrar(canchas, search.value, radio.value);
         crearHtml(nuevoFiltro);
       });
     }
