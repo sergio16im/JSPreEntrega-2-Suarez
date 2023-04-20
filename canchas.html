@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canchas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="container-fluid bg-secondary">
+        
+        <section class=" container menu">
+          
+           <nav class="navbar navbar-expand-lg navbar-dark" > 
+            <div class="container-fluid">
+              <a class="navbar-brand text-white" href="../index.html">
+                <img src="./assets/icons/logo.svg" alt="Icono_de_La_recocha" width="30" height="24" >
+                La recocha
+              </a>             
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="../index.html">Inicio</a>
+                    </li>                                
+                  </ul>
+                </div>
+              </div>
+            </div>
+            </nav>
+          
+        
+        </section>
+    </header>
+        <div class="container-fluid">
+          <div class="row">
+            <h1>Alquilar Cancha</h1>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="row"><h3>Ingresa una nueva cancha</h3></div>
+              <div class="row">
+                <form class="col s12" id="formInventario">
+                  <div class="row">
+                    <div class="input-field col mb-3">
+                      <input
+                        id="titulo"
+                        type="text"
+                        class="validate"
+                      />
+                      <label for="titulo">Nombre</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field mb-3">
+                      <input
+                        id="autor"
+                        type="text"
+                        class="validate"
+                      />
+                      <label for="autor">Dirección</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field mb-3">
+                      <input
+                        id="isbn"
+                        type="text"
+                        class="validate"
+                      />
+                      <label for="isbn">NIT</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field mb-3">
+                      <input
+                        id="categoria"
+                        type="text"
+                        class="validate"
+                      />
+                      <label for="categoria">Calificacion</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field mb-3">
+                      <input id="precio" type="text" class="validate" placeholder="Precio" />
+                      <label for="precio"></label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field mb-3">
+                      <label for="img"></label>
+                      <input id="img" type="text" class="validate" placeholder="Ruta de imagen"/>
+                    </div>
+                  </div>
+                  <input type="submit" id="btnGuardar" class="btn btn-success" value="Guardar">
+                  </div>
+                </form>
+              </div>
+              <div class="col m-1"></div>
+              <div class="col m-8 s-4 m-7" id="contenedor">
+                <!-- Cuadro de búsqueda -->
+                <div class="row">
+                  <div class="col m-12 s-12">
+                    
+                    <div class="input-field inline">
+                      <input id="search" type="search" class="validate">
+                      <label for="search">Buscar</label>
+                    </div>
+                    <div class="col">
+                      <span>
+                        <label>
+                          <input class="with-gap" name="group" type="radio" value='titulo' checked/>
+                          <span>Nombre</span>
+                        </label>
+                        <label>
+                          <input class="with-gap" name="group" type="radio" value='categoria'/>
+                          <span>Calificacion</span>
+                        </label>
+                        <label>
+                          <input class="with-gap" 
+                          name="group" type="radio"value='autor' />
+                          <span>NIT</span>
+                        </label>
+                        <label>
+                          <input class="with-gap" 
+                          name="group" type="radio" value='isbn'/>
+                          <span>Direccion</span>
+                        </label>
+                        <label>
+                          <input class="with-gap" 
+                          name="group" type="radio" value='precio'/>
+                          <span>Precio</span>
+                        </label>
+                      </span>
+                    </div>
+    
+                  </div>
+                </div>
+                <table class="responsive-table striped" id="tabla">
+                  <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Calificacion</th>
+                        <th>NIT</th>
+                        <th>Direccion</th>
+                        <th>Precio</th>
+                        <th></th>
+                    </tr>
+                  </thead>
+          
+                  <tbody id="table-body">
+                    <!-- Contenido dinámico -->
+                  </tbody>
+                </table>
+          
+              </div>
+            </div>
+          </div>
+        </div>
+    
+       
+        <footer class="container-fluid py-5 mt-5 bg-secondary">
+            <div class="container-xxl">
+                <div class="row  justify-content-evenly">
+                  <div class="col-12 col-sm-3"><h2 class="text-white">La recocha</h2>
+                    <div><p class="text-white">Copyright © 2023</p></div>
+                  </div>
+                    <div class="col-12 col-sm-3">
+                      <h4 class="text-white">Links de interés</h4>
+                      <div class="list-group-flush">
+                        <a href="" class="list-group-item bg-secondary text-white pb-2">Contactenos</a>
+                        <a href="" class="list-group-item bg-secondary text-white pb-2">Preguntas frecuentes</a>
+                        <a href="" class="list-group-item bg-secondary text-white pb-2">Acerca de nosotros</a>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-3">
+                      
+                        <h4 class="text-white">Siguenos en</h4>
+                      <a href="https://www.facebook.com/lafutbolerabucaramanga"target="_blank">
+                          <img class="redes__sociales"src="./assets/icons/facebook-.svg" alt="facebook logo" >
+                      </a>
+                      <a href="https://instagram.com/lafutbolerabucaramanga?igshid=MDM4ZDc5MmU="target="_blank">
+                          <img class="redes__sociales"src="./assets/icons/instagram.svg" alt=" isntagram logo">
+                      </a>
+                      <a href="https://twitter.com/FIFAcom"target="_blank">
+                          <img class="redes__sociales"src="./assets/icons/twitter.svg" alt=" Twitter logo">
+                      </a>
+                      <a href="https://www.tiktok.com/@fifaworldcup?lang=es"target="_blank">
+                          <img class="redes__sociales"src="./assets/icons/tik-tok.svg" alt=" tik-tok logo">
+                      </a>
+                    </div>
+                </div>
+              </div>
+           </footer>
+            <!-- Compiled and minified JavaScript -->
+        <script src="./scripts/man.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      
+    
+</body>
+</html>
