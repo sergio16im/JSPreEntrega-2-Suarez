@@ -1,49 +1,62 @@
 const nombre = document.querySelector("#nombre"),
-  autor = document.querySelector("#direccion"),
-  isbn = document.querySelector("#NIT"),
-  categoria = document.querySelector("#calificacion"),
+  id=document.querySelector("#id"),
+  direccion = document.querySelector("#direccion"),
+  tipoCancha=document.querySelector("#tipoCancha"),
+  tipoHorarios=document.querySelector("#tipoHorario")
+  NIT = document.querySelector("#NIT"),
+  calificacion = document.querySelector("#calificacion"),
   precio = document.querySelector("#precio"),
-  img = document.querySelector("#img"),
+  rutaImagen = document.querySelector("#img"),
   search = document.querySelector("#search"),
-  tbody = document.querySelector("#table-body"),
+  sCanchas = document.querySelector("#seccionCanchas"),
+  sFiltros=document.querySelector("#seccionFiltros")
   formInventario = document.querySelector("#formInventario");
 const radios = document.querySelectorAll('input[type="radio"]');
 
-//Libros ya guardados en inventario
+//Canchas ya guardados en inventario
 const inventario = [
-  {
-    nombre:"La pecosa",
-    direccion:"Calle falsa 123",
-    NIT:"1232313",
-    calificacion:23,
-    precio:1200,
-    img: "./assets/images/cancha_1.jpg",
-  },
-  {
-    nombre:"La pecosa",
-    direccion:"Calle falsa 123",
-    NIT:"1232313",
-    calificacion:23,
-    precio:1200,
-    img: "./assets/images/cancha_2.jpg",
-  },
+{id:"X01",
+    nombre:"Cancha sintética La 20",direccion:"Cra. 20 #29-10",tipoCancha:"Sintética",horarios:[],  disponibilidad:[],    tipoHorarios:["Matutino","Nocturno"],    calificacion: 7,    precio:25000,
+    rutaImagen:"./assets/images/cancha_1.jpg"},
+    {
+      id:"X02",    nombre:"El nuevo Maracana",    direccion:"Cl. 18 #21-16",    tipoCancha:"Cemento",
+      horarios:[],    disponibilidad:[],    tipoHorarios:["Nocturno"],    calificacion: 4,
+      precio:30000, rutaImagen:"./assets/images/cancha_2.jpg"},
+      {
+        id:"X03",    nombre:"Digigol",    direccion:"Cl. 14 #15-56",    tipoCancha:"Sintética",    horarios:[],    disponibilidad:[],    tipoHorarios:["Matutino"],    calificacion: 6,
+        precio:35000,    rutaImagen:"./assets/images/cancha_3.jpg"},
+        {
+          id:"X04",    nombre:"Gool de Oro",    direccion:"Cl. 35 #24-69",    tipoCancha:"Sintética",
+          horarios:[],    disponibilidad:[],    tipoHorarios:["Matutino","Nocturno"],    calificacion: 4,
+          precio:20000,    rutaImagen:"./assets/images/cancha_4.jpg"
+      },
+      {
+        id:"X05",    nombre:"Mundo Fútbol Club",    direccion:"Cl. 22 #21-16",    tipoCancha:"Sintética",    horarios:[],    disponibilidad:[],    tipoHorarios:["Matutino","Nocturno"],    calificacion: 8,    precio:40000,    rutaImagen:"./assets/images/cancha_5.jpg"
+    }
 ];
+const arrFiltros=[{    id:"Zero",    nombre:"Tipo de cancha",    valores:["Síntetica","Cemento"]},{    id:"One",    nombre:"Horarios",    valores:["Matutino","Tardes","Nocturno"]},{    id:"Two",    nombre:"Precios",    valores:["25000","30000","40000"]},{    id:"Three",    nombre:"Calificación", valores:["5 estrellas","7 estrellas","9 estrellas"]}]
 
-//Seteo variable libros, si LS vacio entonces libros = inventario
+//Seteo variable canchas, si LS vacio entonces canchas = inventario
 //#####
-let canchas = JSON.parse(localStorage.getItem("inventario")) || inventario;
+let canchas =  inventario;
 
 
-//Constructor del objeto Libro
-function Cancha(nombre,direccion,NIT,calificacion, precio, img) {
+//Constructor del objeto Cancha
+function Cancha(id,nombre,direccion,tipoCancha,horarios,disponibilidad,tipoHorarios,calificacion,precio,rutaImagen) {
+  this.id=id;
   this.nombre = nombre;
   this.direccion = direccion;
+  this.tipoCancha=tipoCancha;
+  this.horarios=horarios;
+  this.disponibilidad=disponibilidad;
   this.NIT = NIT;
+  this.tipoHorarios=tipoHorarios;
+
   this.calificacion = calificacion;
   
   precio == "" ? (this.precio = 1) : (this.precio = precio);
   
-  img == "" ? (this.img = `https://via.placeholder.com/150`) : (this.img = img);
+  rutaImagen == "" ? (this.img = `https://via.placeholder.com/150`) : (this.img = img);
 }
 
 /* Declaración de Funciones */
@@ -59,11 +72,7 @@ function guardarLS(arr) {
 //Función de búsqueda genérica
 function filtrar(arr, filtro, param) {
   return arr.filter((el) => {
-    /*  if (param == "precio") {
-      return el.precio <= parseFloat(filtro);
-    } else {
-      return el[`${param}`].includes(filtro.toLowerCase());
-    } */
+    
     return param == "precio"
       ? el.precio <= parseFloat(filtro)
       : el[`${param}`].includes(filtro.toLowerCase());
@@ -72,41 +81,75 @@ function filtrar(arr, filtro, param) {
 
 //Manipular el DOM
 function crearHtml(arr) {
-  tbody.innerHTML = "";
+  sCanchas.innerHTML = "";
 
   let html = "";
   for (const item of arr) {
-    const { nombre,direccion,NIT, calificacion, precio, img } = item;
-    html = `<tr>
-  <td>${nombre}</td>
-  <td>${direccion}</td>
-  <td>${NIT}</td>
-  <td>${calificacion}</td>
-  <td>${precio}</td>
-  <td><img src="${img}" style="width: 8rem;"/></td>
-  <td><button class="btn btn-danger" id="${NIT}">Borrar</button></td>
-  </tr>`;
-    tbody.innerHTML += html;
+    const {id,nombre,direccion,NIT, calificacion, precio,tipoCancha, rutaImagen } = item;
+    html = `<div class="card jugador" style="width: 18rem;">
+    <div class="d-inline text-center">
+        <h3 class="d-inline">${nombre} </h3>
+       
+    </div>
+    
+    <img src="${rutaImagen}" class="card-img-top" alt="Foto_cancha">
+    <div class="card-body">
+      <h5 class="card-title">${direccion}</h5>
+      <div class="d-inline">
+        <img class="estrella img-rounded d-inline" src="./assets/icons/estrella.png" alt="Icono_de_estrella" style="width: 2rem;">
+        <h3 class="d-inline text-center">${calificacion}</h3>
+      </div>
+      <h3 class="d-inline">${tipoCancha}</h3>
+      <p class="card-text">Horarios:<strong>${calificacion}</strong><div>Precio:<strong>$${precio}</strong></div></p>
+      <a  class="btn btn-success" Id="${id}">Alquilar Cancha</a>
+    </div>
+  </div>`;
+    sCanchas.innerHTML += html;
   }
-  /* <!-- <td><img src="./img/${item.img}"/></td> --> */
+  
   /* Agregar eventos a los botones */
-  const arrayBotones = document.querySelectorAll("td .btn");
+  const arrayBotones = document.querySelectorAll("a.btn,a.btn-success");
   arrayBotones.forEach((btn) => {
     btn.addEventListener("click", () => {
-      canchas = canchas.filter((el) => el.NIT != btn.id);
-      guardarLS(canchas);
+      alert("Aguas")
+      console.log(arrayBotones)
+      canchas = canchas.filter((el) => el.id != btn.id);
+      
       crearHtml(canchas);
     });
   });
 }
-
+function crearFiltros(){
+  let html = "";
+  for(const item of arrFiltros){const{id,nombre,valores}=item
+    html=`<div class="accordion-item">
+    <h2 class="accordion-header" id="heading${id}">
+    <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapse${id}" aria-expanded="false" aria-controls="collapse${id}">
+        ${nombre}
+    </button>
+    </h2>
+    <div id="collapse${id}" class="accordion-collapse collapse" aria-labelledby="heading${id}" data-bs-parent="#accordionExample">
+    <div class="accordion-body">
+                
+<ul class="list-group" id="filtro${id}">
+</ul>
+</div>
+    
+</div>`
+sFiltros.innerHTML+=html
+  }
+  
+}
 /* Fin de funciones */
 
 /* Ejecución de funciones */
 crearHtml(canchas);
+crearFiltros()
+
+// Crear filtros//
 
 //Listeners
-formInventario.addEventListener("submit", (e) => {
+/*formInventario.addEventListener("submit", (e) => {
   e.preventDefault();
   const nuevacancha = new Cancha(
     nombre.value,
@@ -127,7 +170,7 @@ formInventario.addEventListener("submit", (e) => {
 search.addEventListener("input", () => {
   let nuevoFiltro = filtrar(canchas, search.value, "nombre");
   crearHtml(nuevoFiltro);
-});
+});*/
 
 //radio buttons
 for (const radio of radios) {
