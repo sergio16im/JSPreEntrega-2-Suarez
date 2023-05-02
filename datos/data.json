@@ -1,0 +1,15 @@
+[
+    {
+       "id":"UsserA01",
+       "name":"Camilo Vargas",
+       "rol":"Admin",
+       "password":"1234",
+       "email":"admin1@gmail.com",
+       "money":50000,
+       "reservations":[
+          
+       ],
+       "rutaImagen":"./assets/images/goku.jpg"
+    }
+ ]
+ 

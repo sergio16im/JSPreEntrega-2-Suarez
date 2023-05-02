@@ -12,12 +12,12 @@ const nombre = document.querySelector("#nombre"),
   search = document.querySelector("#search"),
   sCanchas = document.querySelector("#seccionCanchas"),
   sFiltros=document.querySelector("#seccionFiltros")
-  formInventario = document.querySelector("#formInventario");
-const radios = document.querySelectorAll('input[type="radio"]');
-let filtrosAplicados=[]
- const usuarios=[{id:"UsserA01",name:"Camilo Vargas", rol:"Admin",password:"1234",email:"admin1@gmail.com",money:50000,reservations:[],rutaImagen:"./assets/images/goku.jpg"}]
+
+
+
 
 //Canchas ya guardados en inventario
+const usuarios=[{id:"UsserA01",name:"Camilo Vargas",rol:"Admin",password:"1234",email:"admin1@gmail.com",money:50000,reservations:[],rutaImagen:"./assets/images/goku.jpg"}]
  const inventario = [
   {id:"X01",
       nombre:"Cancha sintética La 20",direccion:"Cra. 20 #29-10",tipoCancha:"Sintética",horarios:[9,10,11,18,19,20,21,22],  disponibilidad:[1,1,1,1,1,1,1,1],    tipoHorarios:["Matutino","Nocturno"],  hDispo:[],  calificacion: 7,    precio:25000,
@@ -39,10 +39,11 @@ let filtrosAplicados=[]
   ];
 const arrFiltros=[{    id:"Zero",    nombre:"Tipo de cancha",    valores:["Sintética","Cemento"]},{    id:"One",    nombre:"Horarios",    valores:["Matutino","Tardes","Nocturno"]},{    id:"Two",    nombre:"Precios",    valores:["25000","30000","40000"]},{    id:"Three",    nombre:"Calificación", valores:["5 estrellas","7 estrellas","9 estrellas"]}]
 
-//Seteo variable canchas, si LS vacio entonces canchas = inventario
+//Seteo variable canchas y usuario, si LS vacio entonces canchas = inventario
 //#####
+let canchas=inventario
 
-let canchas =  inventario;
+
 
 
 
@@ -58,14 +59,7 @@ function Usuario(id,name,password,money,reservations){
   this.reservations=reservations;
 }
 /* Declaración de Funciones */
-//Cargar al inventario
-function cargarInventario(arr, cancha) {
-  arr.push(cancha);
-}
-//Funciones de LS
-function guardarLS(arr) {
-  localStorage.setItem("inventario", JSON.stringify(arr));
-}
+
 
 //Función de filtros
 function seleccionFiltros(arr){
@@ -170,9 +164,7 @@ function crearHtml(arr) {
 }
 async function crearNodal(idBoton){
   let opcion=canchas.filter(p=>p.id==idBoton)
-  if(opcion[0].precio>usuarios[0].money){
-    let adver=true
-  }
+  
   opcion[0].hDispo=[]
   opcion[0].horarios.forEach(el => {
     let x=el*opcion[0].disponibilidad[opcion[0].horarios.indexOf(el)]
@@ -217,7 +209,8 @@ async function crearNodal(idBoton){
   
 }
 function cambioDisponibilidad(arr,Ihora){
-if(arr[0].precio>usuarios[0].money){
+  let dinero=localStorage.getItem("dinero")
+if(arr[0].precio>dinero){
   Swal.fire({
     icon: 'error',
     title: 'Oops...',
@@ -226,8 +219,11 @@ if(arr[0].precio>usuarios[0].money){
   })
 }
 else{
-
-  
+      dinero-=arr[0].precio
+      localStorage.setItem("dinero",dinero)
+      let reservaTempo=JSON.parse(localStorage.getItem("reservas"))
+      reservaTempo.push(arr[0])
+      localStorage.setItem("reservas",JSON.stringify( reservaTempo))
           inventario.forEach(element => {
             if (element.id==arr[0].id){
                 element.disponibilidad[Ihora]=0
@@ -270,7 +266,7 @@ sFiltros.innerHTML+=html
 
   }
   
-  
+  // Crear filtros//
     const checks=document.querySelectorAll('input[type="checkbox"]');
   for (const check of checks) {
   check.addEventListener("change", () => {
@@ -298,65 +294,9 @@ sFiltros.innerHTML+=html
 /* Fin de funciones */
 
 /* Ejecución de funciones */
-crearHtml(canchas);
+crearHtml(canchas)
 crearFiltros()
 
-// Crear filtros//
-
-//Listeners
-/*
-await Swal.fire({
-    title:`Reserva de cancha: ${opcion[0].nombre}`,
-    text:'Selecciona un horario',
-    icon:'question',
-    input:"select",
-    inputOptions:opcion[0].hDispo,
-    showDenyButton: true,   
-    confirmButtonText: 'Continuar',
-    denyButtonText: "Volver atrás",
-    }
-  ).then((result) => {
-    
-    if (result.isConfirmed) {
-      Swal.fire('Saved!', '', 'success')
-    } else if (result.isDenied) {
-      Swal.fire('Changes are not saved', '', 'info')
-    }})
 
 
 
-formInventario.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const nuevacancha = new Cancha(
-    nombre.value,
-    direccion.value,
-    NIT.value,
-    calificacion.value,
-    precio.value,
-    img.value
-  );
-
-  cargarInventario(canchas, nuevacancha);
-  guardarLS(canchas);
-  crearHtml(canchas);
-  formInventario.reset()
-});
-
-//Listeners de búsqueda
-search.addEventListener("input", () => {
-  let nuevoFiltro = filtrar(canchas, search.value, "nombre");
-  crearHtml(nuevoFiltro);
-});*/
-
-//radio buttons
-for (const radio of radios) {
-  radio.addEventListener("change", () => {
-    
-    if (radio.checked) {
-      search.addEventListener("input", () => {
-        let nuevoFiltro = filtrar(canchas, search.value, radio.value);
-        crearHtml(nuevoFiltro);
-      });
-    }
-  });
-}
