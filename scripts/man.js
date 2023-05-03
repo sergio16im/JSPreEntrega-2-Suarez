@@ -42,10 +42,7 @@ const arrFiltros=[{    id:"Zero",    nombre:"Tipo de cancha",    valores:["Sint√
 //Seteo variable canchas y usuario, si LS vacio entonces canchas = inventario
 //#####
 let canchas=inventario
-
-
-
-
+let filtrosAplicados=[]
 
 //Constructor del objeto Usuario
 
@@ -222,13 +219,19 @@ else{
       dinero-=arr[0].precio
       localStorage.setItem("dinero",dinero)
       let reservaTempo=JSON.parse(localStorage.getItem("reservas"))
-      reservaTempo.push(arr[0])
+      let descripcionReserva={id:`C${arr[0].id}H${arr[0].hDispo[Ihora]}`,cancha:arr[0].nombre,horario:arr[0].hDispo[Ihora],rutaImg:arr[0].rutaImagen}
+      console.log(Ihora)
+      reservaTempo.push(descripcionReserva)
       localStorage.setItem("reservas",JSON.stringify( reservaTempo))
           inventario.forEach(element => {
             if (element.id==arr[0].id){
-                element.disponibilidad[Ihora]=0
-                
+              let horaR=arr[0].hDispo[Ihora]
+              
+              let i =parseInt(element.horarios.findIndex(el =>el==horaR))
+               
+               element.disponibilidad[i]=0
             }
+            
         });
     }
 }
@@ -294,6 +297,7 @@ sFiltros.innerHTML+=html
 /* Fin de funciones */
 
 /* Ejecuci√≥n de funciones */
+
 crearHtml(canchas)
 crearFiltros()
 

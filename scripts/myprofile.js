@@ -20,6 +20,7 @@ function paginaPerfil(arr){
       </div>
     </div>`
   }
+
   function inicioZero(){
     let x=localStorage.getItem("valorx")
     
@@ -28,11 +29,10 @@ function paginaPerfil(arr){
       localStorage.setItem("reservas",JSON.stringify( usuarios[0].reservations))
       localStorage.setItem("valorx",true)
     }
-  }
-    
-    inicioZero()
-    paginaPerfil(usuarios)
+  }  
   
+  inicioZero()
+  paginaPerfil(usuarios)
   
 
   const recarga=document.querySelector("#botonRecarga");
@@ -67,10 +67,11 @@ function paginaPerfil(arr){
       let dinero=parseInt(localStorage.getItem("dinero"))
        dinero+=opcionesRecarga[indexRecarga]
       localStorage.setItem("dinero",dinero)
-      paginaPerfil(usuarios)
+      
       
     }
     
 
   }
+  
   
