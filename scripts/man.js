@@ -18,33 +18,41 @@ const nombre = document.querySelector("#nombre"),
 
 //Canchas ya guardados en inventario
 const usuarios=[{id:"UsserA01",name:"Camilo Vargas",rol:"Admin",password:"1234",email:"admin1@gmail.com",money:50000,reservations:[],rutaImagen:"./assets/images/goku.jpg"}]
- const inventario = [
-  {id:"X01",
-      nombre:"Cancha sintética La 20",direccion:"Cra. 20 #29-10",tipoCancha:"Sintética",horarios:[9,10,11,18,19,20,21,22],  disponibilidad:[1,1,1,1,1,1,1,1],    tipoHorarios:["Matutino","Nocturno"],  hDispo:[],  calificacion: 7,    precio:25000,
-      rutaImagen:"./assets/images/cancha_1.jpg"},
-      {id:"X02",    nombre:"El nuevo Maracana",    direccion:"Cl. 18 #21-16",    tipoCancha:"Cemento",
-        horarios:[18,19,20,21,22],    disponibilidad:[1,1,1,1,1],    tipoHorarios:["Nocturno"], hDispo:[],   calificacion: 4,
-        precio:30000, rutaImagen:"./assets/images/cancha_2.jpg"},
-        {
-          id:"X03",    nombre:"Digigol",    direccion:"Cl. 14 #15-56",    tipoCancha:"Sintética",    horarios:[8,9,10,11],    disponibilidad:[1,1,1,1],    tipoHorarios:["Matutino"],hDispo:[],    calificacion: 6,
-          precio:35000,    rutaImagen:"./assets/images/cancha_3.jpg"},
-          {
-            id:"X04",    nombre:"Gool de Oro",    direccion:"Cl. 35 #24-69",    tipoCancha:"Sintética",
-            horarios:[9,10,11,18,19,20,21,22],    disponibilidad:[1,1,1,1,1,1,1,1],    tipoHorarios:["Matutino","Nocturno"], hDispo:[],   calificacion: 4,
-            precio:20000,    rutaImagen:"./assets/images/cancha_4.jpg"
-        },
-        {
-          id:"X05",    nombre:"Mundo Fútbol Club",    direccion:"Cl. 22 #21-16",    tipoCancha:"Sintética",    horarios:[9,10,11,14,15,16,17,18,19,20,21,22],    disponibilidad:[1,1,1,1,1,1,1,1,1,1,1,1],    tipoHorarios:["Matutino","Tardes","Nocturno"], hDispo:[],   calificacion: 8,    precio:40000,    rutaImagen:"./assets/images/cancha_5.jpg"
-      }
-  ];
+
 const arrFiltros=[{    id:"Zero",    nombre:"Tipo de cancha",    valores:["Sintética","Cemento"]},{    id:"One",    nombre:"Horarios",    valores:["Matutino","Tardes","Nocturno"]},{    id:"Two",    nombre:"Precios",    valores:["25000","30000","40000"]},{    id:"Three",    nombre:"Calificación", valores:["5 estrellas","7 estrellas","9 estrellas"]}]
 
 //Seteo variable canchas y usuario, si LS vacio entonces canchas = inventario
 //#####
-let canchas=inventario
-let filtrosAplicados=[]
 
+async function fetchCanchas(){
+  const res=await fetch("../datos/data.json")
+  const data=await res.json()
+   
+    let y=localStorage.getItem("valory")
+    if(y==null){
+      
+      localStorage.setItem("canchas",JSON.stringify(data))
+      localStorage.setItem("valory",true)
+      setTimeout(() => {
+        location.reload()
+      }, "1000");
+      
+    }
+   
+
+}
+
+
+
+
+
+
+let filtrosAplicados=[]
+let canchas=JSON.parse(localStorage.getItem("canchas"))
 //Constructor del objeto Usuario
+crearFiltros()
+fetchCanchas()
+crearHtml(canchas)
 
 function Usuario(id,name,password,money,reservations){
   this.id=id;
@@ -216,24 +224,35 @@ if(arr[0].precio>dinero){
   })
 }
 else{
+  Swal.fire({
+    title:"Reserva exitosa",
+    text:"El comprobante fue enviado a tu correo electrónico",
+    icon:"success"
+  })
       dinero-=arr[0].precio
       localStorage.setItem("dinero",dinero)
+      //Cambios en el local storage
       let reservaTempo=JSON.parse(localStorage.getItem("reservas"))
-      let descripcionReserva={id:`C${arr[0].id}H${arr[0].hDispo[Ihora]}`,cancha:arr[0].nombre,horario:arr[0].hDispo[Ihora],rutaImg:arr[0].rutaImagen}
+      let descripcionReserva={id:`C${arr[0].id}H${arr[0].hDispo[Ihora]}`,cancha:arr[0].nombre,horario:arr[0].hDispo[Ihora],precio:arr[0].precio}
       console.log(Ihora)
       reservaTempo.push(descripcionReserva)
       localStorage.setItem("reservas",JSON.stringify( reservaTempo))
-          inventario.forEach(element => {
+      let baseCanchas=JSON.parse(localStorage.getItem("canchas"))
+
+          baseCanchas.forEach(element => {
             if (element.id==arr[0].id){
               let horaR=arr[0].hDispo[Ihora]
               
               let i =parseInt(element.horarios.findIndex(el =>el==horaR))
-               
-               element.disponibilidad[i]=0
+              element.disponibilidad[i]=0
             }
             
         });
+        localStorage.setItem("canchas",JSON.stringify(baseCanchas))
     }
+    setTimeout(() => {
+      location.reload()
+    }, "5000");
 }
 
 
@@ -283,7 +302,7 @@ sFiltros.innerHTML+=html
       else{
         filtrosAplicados=filtrosAplicados.filter(s=>s!=check.value)
         console.log(filtrosAplicados)
-         canchas=inventario
+         canchas=JSON.parse(localStorage.getItem("canchas"))
         seleccionFiltros(filtrosAplicados)
       }
     });
@@ -298,8 +317,7 @@ sFiltros.innerHTML+=html
 
 /* Ejecución de funciones */
 
-crearHtml(canchas)
-crearFiltros()
+
 
 
 

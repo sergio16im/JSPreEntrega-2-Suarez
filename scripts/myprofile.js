@@ -1,4 +1,5 @@
 
+const Sreservas=document.querySelector("#perfilReservas")
 const opcionesRecarga=[10000,20000,50000]
 function paginaPerfil(arr){
     let html=document.querySelector("#perfilInformacion")
@@ -19,6 +20,35 @@ function paginaPerfil(arr){
         
       </div>
     </div>`
+
+  }
+  function crearRerservas(){
+    
+    Sreservas.innerHTML=""
+    let html=""
+    let arr=JSON.parse(localStorage.getItem("reservas"))
+    if(arr.length==0){
+      Sreservas.innerHTML=`<div class="alert alert-secondary" role="alert">
+     No cuentas con reservas en estos momentos
+    </div>`
+    }
+    else{
+      for(const item of arr){
+        const{id,cancha,horario,precio}=item
+        html=`<div class="card col-12" >
+        <div class="card-body">
+          <h5 class="card-title">Reserva ${id}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Cancha: ${cancha}</h6>
+          <p class="card-text">Horario: ${horario} horas</p>
+          <p class="card-text">Precio:$ ${horario}</p>
+          <a  id="btn${id}"class="btn btn-danger">Cancelar reservacion</a>
+          
+        </div>
+      </div>`
+        Sreservas.innerHTML+=html
+      }
+    }
+    
   }
 
   function inicioZero(){
@@ -33,11 +63,14 @@ function paginaPerfil(arr){
   
   inicioZero()
   paginaPerfil(usuarios)
+  crearRerservas()
+  
   
 
   const recarga=document.querySelector("#botonRecarga");
   recarga.addEventListener("click",()=>{
     recargaDinero()
+    
     
  
   });
@@ -67,6 +100,9 @@ function paginaPerfil(arr){
       let dinero=parseInt(localStorage.getItem("dinero"))
        dinero+=opcionesRecarga[indexRecarga]
       localStorage.setItem("dinero",dinero)
+      setTimeout(() => {
+        location.reload()
+      }, "5000");
       
       
     }
