@@ -43,17 +43,43 @@ function paginaPerfil(arr){
           <h6 class="card-subtitle mb-2 text-muted">Lugar: ${cancha}</h6>
           <p class="card-text">Horario: ${horario} horas</p>
           <p class="card-text">Precio:$ ${precio}</p>
-          <a  id="btn${id}"class="btn btn-danger">Cancelar reservacion</a>
+          <a  id="btn${id}"class="btn btn-danger cancelacion">Cancelar reservacion</a>
           
         </div>
       </div>`
         Sreservas.innerHTML+=html
       }
+          const cancelBotons=document.querySelectorAll('a.cancelacion');
+        
+            for (const can of cancelBotons) {
+            can.addEventListener("click", () => {
+                cancelacion(can.id)
+                
+              });
+            }
     }
     
   }
 
-  
+  async function cancelacion(idReserva){
+    const{value:resultado}=await Swal.fire({title:`Reserva`,
+    icon:"question",
+    confirmButtonText:"Cancelar Reserva",
+    text:"¿Desea cancelar su reservación?"
+  })
+  if(resultado){
+    Swal.fire("gohan")
+    //Cambio en el localStorage
+    let id=idReserva.substr(3)
+    let reservas=JSON.parse(localStorage.getItem("reservas"))
+    reservas=reservas.filter((el)=>el.id!=id)
+    localStorage.setItem("reservas",JSON.stringify(reservas))
+    
+    setTimeout(() => {
+      location.reload()
+    }, "1000");
+  }
+  }
   
   //Funciones asincronicas 
   async function recargaDinero(){
@@ -134,7 +160,7 @@ async function cambioInformacion(){
   }
 }
   //Ejecucionde funciones
-  paginaPerfil(usuarios)
+  paginaPerfil()
   crearRerservas()
   
   
