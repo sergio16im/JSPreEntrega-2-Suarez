@@ -1,28 +1,35 @@
 
 
-const nombre = document.querySelector("#nombre"),
-  id=document.querySelector("#id"),
-  direccion = document.querySelector("#direccion"),
-  tipoCancha=document.querySelector("#tipoCancha"),
-  tipoHorarios=document.querySelector("#tipoHorario")
-  NIT = document.querySelector("#NIT"),
-  calificacion = document.querySelector("#calificacion"),
-  precio = document.querySelector("#precio"),
-  rutaImagen = document.querySelector("#img"),
-  search = document.querySelector("#search"),
-  sCanchas = document.querySelector("#seccionCanchas"),
-  sFiltros=document.querySelector("#seccionFiltros")
+
+  const sCanchas = document.querySelector("#seccionCanchas")
+  const sFiltros=document.querySelector("#seccionFiltros")
 
 
 
 
-//Canchas ya guardados en inventario
+//Informacion de usuario
 const usuarios=[{id:"UsserA01",name:"Camilo Vargas",rol:"Admin",password:"1234",email:"admin1@gmail.com",money:50000,reservations:[],rutaImagen:"./assets/images/goku.jpg"}]
 
 const arrFiltros=[{    id:"Zero",    nombre:"Tipo de cancha",    valores:["Sintética","Cemento"]},{    id:"One",    nombre:"Horarios",    valores:["Matutino","Tardes","Nocturno"]},{    id:"Two",    nombre:"Precios",    valores:["25000","30000","40000"]},{    id:"Three",    nombre:"Calificación", valores:["5 estrellas","7 estrellas","9 estrellas"]}]
 
 //Seteo variable canchas y usuario, si LS vacio entonces canchas = inventario
 //#####
+
+function inicioZero(){
+  let x=localStorage.getItem("valorx")
+  
+  if(x==null){
+    localStorage.setItem("nombreUsuario",usuarios[0].name)
+    localStorage.setItem("correoUsuario",usuarios[0].email)
+    localStorage.setItem("rutaImagen",usuarios[0].rutaImagen)
+    localStorage.setItem("dinero",usuarios[0].money)
+    localStorage.setItem("rolUsuario",usuarios[0].rol)
+    localStorage.setItem("reservas",JSON.stringify( usuarios[0].reservations))
+    localStorage.setItem("valorx",true)
+  }
+}  
+
+
 
 async function fetchCanchas(){
   const res=await fetch("../datos/data.json")
@@ -42,17 +49,10 @@ async function fetchCanchas(){
 
 }
 
-
-
-
-
-
 let filtrosAplicados=[]
 let canchas=JSON.parse(localStorage.getItem("canchas"))
 //Constructor del objeto Usuario
-crearFiltros()
-fetchCanchas()
-crearHtml(canchas)
+
 
 function Usuario(id,name,password,money,reservations){
   this.id=id;
@@ -252,7 +252,7 @@ else{
     }
     setTimeout(() => {
       location.reload()
-    }, "5000");
+    }, "3000");
 }
 
 
@@ -317,6 +317,10 @@ sFiltros.innerHTML+=html
 
 /* Ejecución de funciones */
 
+inicioZero()
+crearFiltros()
+fetchCanchas()
+crearHtml(canchas)
 
 
 

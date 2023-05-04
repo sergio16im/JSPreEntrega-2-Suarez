@@ -1,23 +1,25 @@
 
 const Sreservas=document.querySelector("#perfilReservas")
 const opcionesRecarga=[10000,20000,50000]
+
+//Manipulacion del DOM//
 function paginaPerfil(arr){
     let html=document.querySelector("#perfilInformacion")
     html.innerHTML=`<div class="card" style="width:100%;">
     <!--Seccion de perfil de la cancha-->
-      <img src=".${arr[0].rutaImagen}" class="card-img-top" alt="foto_perfil">
+      <img src=".${localStorage.getItem("rutaImagen")}" class="card-img-top" alt="foto_perfil">
       <div class="card-body">
-        <h5 class="card-title text-center">${arr[0].name}</h5>
+        <h5 class="card-title text-center">${localStorage.getItem("nombreUsuario")}</h5>
         
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-center">${arr[0].rol}</li>
-        <li class="list-group-item text-center">${arr[0].email}</li>
+        <li class="list-group-item text-center">${localStorage.getItem("correoUsuario")}</li>
         <li class="list-group-item text-center">$${localStorage.getItem("dinero")}</li>
       </ul>
       <div class="card-body">
       <a class="card-link" id="botonRecarga"><h6 class="text-center">Hacer Recarga</h6></a>
-        
+      <a class="card-link link-danger" id="botonInfoCambio"><h6 class="text-center">Cambiar información  básica</h6></a>
       </div>
     </div>`
 
@@ -38,9 +40,9 @@ function paginaPerfil(arr){
         html=`<div class="card col-12" >
         <div class="card-body">
           <h5 class="card-title">Reserva ${id}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Cancha: ${cancha}</h6>
+          <h6 class="card-subtitle mb-2 text-muted">Lugar: ${cancha}</h6>
           <p class="card-text">Horario: ${horario} horas</p>
-          <p class="card-text">Precio:$ ${horario}</p>
+          <p class="card-text">Precio:$ ${precio}</p>
           <a  id="btn${id}"class="btn btn-danger">Cancelar reservacion</a>
           
         </div>
@@ -51,30 +53,9 @@ function paginaPerfil(arr){
     
   }
 
-  function inicioZero(){
-    let x=localStorage.getItem("valorx")
-    
-    if(x==null){
-      localStorage.setItem("dinero",usuarios[0].money)
-      localStorage.setItem("reservas",JSON.stringify( usuarios[0].reservations))
-      localStorage.setItem("valorx",true)
-    }
-  }  
-  
-  inicioZero()
-  paginaPerfil(usuarios)
-  crearRerservas()
   
   
-
-  const recarga=document.querySelector("#botonRecarga");
-  recarga.addEventListener("click",()=>{
-    recargaDinero()
-    
-    
- 
-  });
-  
+  //Funciones asincronicas 
   async function recargaDinero(){
     
     const { value: indexRecarga } = await Swal.fire({
@@ -102,12 +83,25 @@ function paginaPerfil(arr){
       localStorage.setItem("dinero",dinero)
       setTimeout(() => {
         location.reload()
-      }, "5000");
+      }, "2000");
       
       
     }
     
 
   }
+
+  //Ejecucionde funciones
+  paginaPerfil(usuarios)
+  crearRerservas()
   
+  
+
+  const recarga=document.querySelector("#botonRecarga");
+  recarga.addEventListener("click",()=>{
+    recargaDinero()
+    
+    
+ 
+  });
   
