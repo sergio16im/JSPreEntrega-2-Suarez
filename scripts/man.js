@@ -316,11 +316,11 @@ sFiltros.innerHTML+=html
 /* Fin de funciones */
 
 /* Ejecución de funciones */
-
 inicioZero()
 crearFiltros()
 fetchCanchas()
 crearHtml(canchas)
+
 
 
 

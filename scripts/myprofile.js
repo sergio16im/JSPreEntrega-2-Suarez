@@ -13,7 +13,7 @@ function paginaPerfil(arr){
         
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item text-center">${arr[0].rol}</li>
+        <li class="list-group-item text-center">${localStorage.getItem("rolUsuario")}</li>
         <li class="list-group-item text-center">${localStorage.getItem("correoUsuario")}</li>
         <li class="list-group-item text-center">$${localStorage.getItem("dinero")}</li>
       </ul>
@@ -90,13 +90,55 @@ function paginaPerfil(arr){
     
 
   }
-
+async function cambioInformacion(){
+  const { value: formValues } = await Swal.fire({
+    title: 'Cambio de información básica',
+    html:
+    `   <div class="input-group mb-3">
+          <span class="input-group-text">Nombre</span>
+          <input type="text" class="form-control" Value="${localStorage.getItem("nombreUsuario")}"  aria-label="nombre" aria-describedby="basic-addon1" id="swal-input1">
+        </div>
+        <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Email</span>
+        <input type="email" class="form-control" placeholder="Email" Value="${localStorage.getItem("correoUsuario")}" aria-label="email" aria-describedby="basic-addon1" id="swal-input2">
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">URL Foto de perfil</span>
+        <input type="url" class="form-control" Value="${localStorage.getItem("rutaImagen")}" aria-label="urlFoto" aria-describedby="basic-addon1" id="swal-input3">
+      </div>
+           
+     `,
+    focusConfirm: false,
+    preConfirm: () => {
+      return [
+        document.getElementById('swal-input1').value,
+        document.getElementById('swal-input2').value,
+        document.getElementById('swal-input3').value
+      ]
+      
+    },
+    showCancelButton: true,
+    confirmButtonText:"Cambiar información",
+    cancelButtonText:"Cancelar",
+    allowOutsideClick:false
+  })
+  
+  if (formValues) {
+    localStorage.setItem("nombreUsuario",formValues[0])
+    localStorage.setItem("correoUsuario",formValues[1])
+    localStorage.setItem("rutaImagen",formValues[2])
+    Swal.fire({title:"Cambios guardados",icon:"success"})
+    setTimeout(() => {
+      location.reload()
+    }, "1000");
+  }
+}
   //Ejecucionde funciones
   paginaPerfil(usuarios)
   crearRerservas()
   
   
-
+// Creacion de listeners
   const recarga=document.querySelector("#botonRecarga");
   recarga.addEventListener("click",()=>{
     recargaDinero()
@@ -104,4 +146,5 @@ function paginaPerfil(arr){
     
  
   });
-  
+  const cambioInfo=document.querySelector('#botonInfoCambio')
+  cambioInfo.addEventListener("click",()=>{cambioInformacion()})
