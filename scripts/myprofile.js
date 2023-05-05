@@ -68,17 +68,40 @@ function paginaPerfil(arr){
     text:"¿Desea cancelar su reservación?"
   })
   if(resultado){
-    Swal.fire("gohan")
+    Swal.fire({title:"Reserva Cancelada", text:"Su dinero ha sido reembolsado a su cuenta"
+  })
     //Cambio en el localStorage
     let id=idReserva.substr(3)
     let reservas=JSON.parse(localStorage.getItem("reservas"))
-    reservas=reservas.filter((el)=>el.id!=id)
-    localStorage.setItem("reservas",JSON.stringify(reservas))
+    let reservaEliminada=reservas.filter((el)=>el.id==id)    
+    let reembolso=parseInt(reservaEliminada[0].precio)
     
-    setTimeout(() => {
+    //Actualizacion de la disponibilidad
+    let baseCanchas=JSON.parse(localStorage.getItem("canchas"))
+    
+    let indexCancha=baseCanchas.findIndex((el)=>el.nombre==reservaEliminada[0].cancha)
+    console.log(indexCancha)
+
+    let indexHorario=baseCanchas[indexCancha].horarios.findIndex((il)=>il==parseInt(reservaEliminada[0].horario))
+
+    baseCanchas[indexCancha].disponibilidad[indexHorario]=1
+    
+    localStorage.setItem("canchas",JSON.stringify( baseCanchas))
+
+    //Actualizacion de las reservas
+
+    reservas=reservas.filter((el)=>el.id!=id) 
+    localStorage.setItem("reservas",JSON.stringify(reservas))
+
+    //Actualizacion del dinero
+
+    let money=parseInt(localStorage.getItem("dinero"))
+    money+=reembolso
+    localStorage.setItem("dinero",money)
+    
+  }setTimeout(() => {
       location.reload()
-    }, "1000");
-  }
+    }, "2000");
   }
   
   //Funciones asincronicas 
@@ -160,6 +183,7 @@ async function cambioInformacion(){
   }
 }
   //Ejecucionde funciones
+  
   paginaPerfil()
   crearRerservas()
   
@@ -174,3 +198,4 @@ async function cambioInformacion(){
   });
   const cambioInfo=document.querySelector('#botonInfoCambio')
   cambioInfo.addEventListener("click",()=>{cambioInformacion()})
+  
