@@ -3,7 +3,171 @@
 
   const sCanchas = document.querySelector("#seccionCanchas")
   const sFiltros=document.querySelector("#seccionFiltros")
-
+const inventario=[
+  {
+    id: "X01",
+    nombre: "Cancha sintética La 20",
+    direccion: "Cra. 20 #29-10",
+    tipoCancha: "Sintética",
+    horarios: [
+      9,
+      10,
+      11,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    disponibilidad: [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    tipoHorarios: [
+      "Matutino",
+      "Nocturno"
+    ],
+    hDispo: [],
+    calificacion: 7,
+    precio: 25000,
+    rutaImagen: "./assets/images/cancha_1.jpg"
+  },
+  {
+    id: "X02",
+    nombre: "El nuevo Maracana",
+    direccion: "Cl. 18 #21-16",
+    tipoCancha: "Cemento",
+    horarios: [
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    disponibilidad: [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    tipoHorarios: [
+      "Nocturno"
+    ],
+    hDispo: [],
+    calificacion: 4,
+    precio: 30000,
+    rutaImagen: "./assets/images/cancha_2.jpg"
+  },
+  {
+    id: "X03",
+    nombre: "Digigol",
+    direccion: "Cl. 14 #15-56",
+    tipoCancha: "Sintética",
+    horarios: [
+      8,
+      9,
+      10,
+      11
+    ],
+    disponibilidad: [
+      1,
+      1,
+      1,
+      1
+    ],
+    tipoHorarios: [
+      "Matutino"
+    ],
+    hDispo: [],
+    calificacion: 6,
+    precio: 35000,
+    rutaImagen: "./assets/images/cancha_3.jpg"
+  },
+  {
+    id: "X04",
+    nombre: "Gool de Oro",
+    direccion: "Cl. 35 #24-69",
+    tipoCancha: "Sintética",
+    horarios: [
+      9,
+      10,
+      11,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    disponibilidad: [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    tipoHorarios: [
+      "Matutino",
+      "Nocturno"
+    ],
+    hDispo: [],
+    calificacion: 4,
+    precio: 20000,
+    rutaImagen: "./assets/images/cancha_4.jpg"
+  },
+  {
+    id: "X05",
+    nombre: "Mundo Fútbol Club",
+    direccion: "Cl. 22 #21-16",
+    tipoCancha: "Sintética",
+    horarios: [
+      9,
+      10,
+      11,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    disponibilidad: [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    tipoHorarios: [
+      "Matutino",
+      "Tardes",
+      "Nocturno"
+    ],
+    hDispo: [],
+    calificacion: 8,
+    precio: 40000,
+    rutaImagen: "./assets/images/cancha_5.jpg"
+  }
+]
 
 
 
@@ -32,13 +196,12 @@ function inicioZero(){
 
 
 async function fetchCanchas(){
-  const res=await fetch("../datos/data.json")
-  const data=await res.json()
+  
    
     let y=localStorage.getItem("valory")
     if(y==null){
-      
-      localStorage.setItem("canchas",JSON.stringify(data))
+      let local=inventario
+      localStorage.setItem("canchas",JSON.stringify(local))
       localStorage.setItem("valory",true)
       setTimeout(() => {
         location.reload()
@@ -320,6 +483,8 @@ inicioZero()
 crearFiltros()
 fetchCanchas()
 crearHtml(canchas)
+
+
 
 
 
